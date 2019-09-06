@@ -1,0 +1,38 @@
+{
+  "name": "use-snapshot",
+  "version": "0.0.0",
+  "description": "A React hook to snapshot any value in render.",
+  "repository": "github:jeff-chheng/use-snapshot",
+  "keywords": [
+    "react",
+    "hook",
+    "react-hook",
+    "react hooks"
+  ],
+  "main": "index.js",
+  "author": {
+    "name": "Jeff Chheng",
+    "email": "jeffchheng@gmail.com"
+  },
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "babel src/index.js --out-file index.js --presets @babel/preset-env --presets @babel/preset-react",
+    "release": "npm run build && np"
+  },
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@babel/cli": "7",
+    "@babel/core": "7",
+    "@babel/preset-env": "7",
+    "@babel/preset-react": "7",
+    "np": "5",
+    "react": ">= 16.8"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8"
+  }
+}
