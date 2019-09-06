@@ -1,6 +1,6 @@
 {
   "name": "use-snapshot",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A React hook to snapshot any value in render.",
   "repository": "github:jeff-chheng/use-snapshot",
   "keywords": [
