@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`use-snapshot can snapshot state with useSnapshot and provide it via useStateSnapshot 1`] = `
+<div>
+  Stringified State: 
+  {"Foo":"Foo","Bar":"Bar"}
+</div>
+`;
