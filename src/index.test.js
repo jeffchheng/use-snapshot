@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
 import {
-	SnapshotProvider,
-	useSnapshot,
-	useStateSnapshot,
+  SnapshotProvider,
+  useSnapshot,
+  useStateSnapshot,
 } from '.';
 
 function State() {
@@ -41,9 +41,9 @@ function App() {
 }
 
 describe('use-snapshot', () => {
-	it('can snapshot state with useSnapshot and provide it via useStateSnapshot', () => {
-		const { container, getByText, rerender } = render(<App />);
-		fireEvent.click(getByText('Snapshot'));
-		expect(getByText(/Stringified State/i)).toMatchSnapshot();
-	});
+  it('can snapshot state with useSnapshot and provide it via useStateSnapshot', () => {
+    const { container, getByText, rerender } = render(<App />);
+    fireEvent.click(getByText('Snapshot'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+  });
 });
