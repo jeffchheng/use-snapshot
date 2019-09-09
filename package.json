@@ -17,7 +17,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "babel src/index.js --out-file index.js --presets @babel/preset-env --presets @babel/preset-react",
+    "build": "babel src/index.js --out-file index.js",
     "test": "jest",
     "release": "npm run build && np"
   },
