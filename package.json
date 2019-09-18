@@ -1,6 +1,6 @@
 {
   "name": "use-snapshot",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Snapshot any value in a component's render phase and save it to state for debugging.",
   "repository": "github:jeffchheng/use-snapshot",
   "keywords": [
