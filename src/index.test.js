@@ -41,9 +41,28 @@ function App() {
 }
 
 describe('use-snapshot', () => {
+  let ogConsoleError;
+
+  beforeEach(() => {
+    ogConsoleError = console.error;
+    console.error = () => null;
+  });
+
+  afterEach(() => {
+    console.error = ogConsoleError;
+  });
+
   it('can snapshot state with useSnapshot and provide it via useStateSnapshot', () => {
     const { container, getByText, rerender } = render(<App />);
     fireEvent.click(getByText('Snapshot'));
     expect(getByText(/Stringified State/i)).toMatchSnapshot();
+  });
+
+  it('useSnapshot throws when rendered outside of SnapshotProvider', () => {
+    expect(() => render(<Foo />)).toThrow();
+  });
+
+  it('useStateSnapshot throws when rendered outside of SnapshotProvider', () => {
+    expect(() => render(<State />)).toThrow();
   });
 });

@@ -5,10 +5,10 @@ import React, {
   useContext
 } from 'react';
 
-const SnapshotDispatch = React.createContext(() => null);
-const StateSnapshot = React.createContext({});
-const ShouldSnapshot = React.createContext(false);
-const SetShouldSnapshot = React.createContext(() => null);
+const SnapshotDispatch = React.createContext();
+const StateSnapshot = React.createContext();
+const ShouldSnapshot = React.createContext();
+const SetShouldSnapshot = React.createContext();
 
 const initialState = {};
 
@@ -41,6 +41,10 @@ export function useSnapshot(key, value, shouldSave = true) {
   const dispatch = useContext(SnapshotDispatch);
   const shouldSnapshot = useContext(ShouldSnapshot);
 
+  if (dispatch === undefined) {
+    throw new Error('useSnapshot must be used within a SnapshotProvider');
+  }
+
   useEffect(() => {
     if (shouldSnapshot && shouldSave && key && value) {
       dispatch({ type: 'save', key, value });
@@ -63,6 +67,10 @@ export function useStateSnapshot() {
       setShouldSnapshot(false);
     }
   }, [dispatch, setShouldSnapshot]);
+
+  if (dispatch === undefined) {
+    throw new Error('useStateSnapshot must be used within a SnapshotProvider');
+  }
 
   return state;
 }
