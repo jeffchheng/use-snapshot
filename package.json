@@ -19,7 +19,7 @@
   "scripts": {
     "build": "babel src/index.js --out-file index.js",
     "test": "jest",
-    "release": "npm run build && np"
+    "release": "np"
   },
   "files": [
     "index.js",
