@@ -3,41 +3,76 @@
 exports[`use-snapshot can snapshot state with useSnapshot and provide it via useStateSnapshot 1`] = `
 <div>
   Stringified State: 
-  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue"}
+  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue","DynamicShouldSave":null}
 </div>
 `;
 
-exports[`use-snapshot removes the previous key from state when it changes 1`] = `
+exports[`use-snapshot handles dynamic updates to keys by removing the previous key from state 1`] = `
+<div>
+  Stringified State: 
+  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue","DynamicShouldSave":null}
+</div>
+`;
+
+exports[`use-snapshot handles dynamic updates to keys by removing the previous key from state 2`] = `
+<div>
+  Stringified State: 
+  {"Foo":"Foo","Bar":"Bar","DynamicShouldSave":null,"DynamicKey-2":"StaticValue"}
+</div>
+`;
+
+exports[`use-snapshot handles dynamic updates to keys by removing the previous key from state 3`] = `
+<div>
+  Stringified State: 
+  {"Foo":"Foo","Bar":"Bar","DynamicShouldSave":null,"DynamicKey-3":"StaticValue"}
+</div>
+`;
+
+exports[`use-snapshot handles dynamic updates to shouldSave by removing or adding to state 1`] = `
+<div>
+  Stringified State: 
+  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue","DynamicShouldSave":null}
+</div>
+`;
+
+exports[`use-snapshot handles dynamic updates to shouldSave by removing or adding to state 2`] = `
 <div>
   Stringified State: 
   {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue"}
 </div>
 `;
 
-exports[`use-snapshot removes the previous key from state when it changes 2`] = `
+exports[`use-snapshot handles dynamic updates to shouldSave by removing or adding to state 3`] = `
 <div>
   Stringified State: 
-  {"Foo":"Foo","Bar":"Bar","DynamicKey-2":"StaticValue"}
+  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue","DynamicShouldSave":null}
+</div>
+`;
+
+exports[`use-snapshot handles dynamic updates to shouldSave by removing or adding to state 4`] = `
+<div>
+  Stringified State: 
+  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue"}
 </div>
 `;
 
 exports[`use-snapshot updates state values when they change 1`] = `
 <div>
   Stringified State: 
-  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue"}
+  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue","DynamicShouldSave":null}
 </div>
 `;
 
 exports[`use-snapshot updates state values when they change 2`] = `
 <div>
   Stringified State: 
-  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue","input":"whatevs"}
+  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue","DynamicShouldSave":null,"input":"whatevs"}
 </div>
 `;
 
 exports[`use-snapshot updates state values when they change 3`] = `
 <div>
   Stringified State: 
-  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue"}
+  {"Foo":"Foo","Bar":"Bar","DynamicKey-1":"StaticValue","DynamicShouldSave":null}
 </div>
 `;

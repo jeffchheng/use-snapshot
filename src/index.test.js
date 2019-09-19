@@ -59,6 +59,17 @@ function DynamicKey() {
   );
 }
 
+function DynamicShouldSave() {
+  const [shouldSave, setShouldSave] = useState(true);
+  useSnapshot('DynamicShouldSave', null, shouldSave);
+  return (
+    <div>
+      DynamicShouldSave shouldSave={String(shouldSave)}
+      <button onClick={() => setShouldSave(x => !x)}>Toggle Should Save</button>
+    </div>
+  );
+}
+
 function App() {
   const [showState, setShowState] = useState(false);
   return (
@@ -68,6 +79,7 @@ function App() {
       <Baz />
       <Form />
       <DynamicKey />
+      <DynamicShouldSave />
       <button onClick={() => setShowState(state => !state)}>Snapshot</button>
       {showState && <State />}
     </SnapshotProvider>
@@ -92,11 +104,25 @@ describe('use-snapshot', () => {
     expect(getByText(/Stringified State/i)).toMatchSnapshot();
   });
 
-  it('removes the previous key from state when it changes', () => {
+  it('handles dynamic updates to keys by removing the previous key from state', () => {
     const { container, getByText } = render(<App />);
     fireEvent.click(getByText('Snapshot'));
     expect(getByText(/Stringified State/i)).toMatchSnapshot();
     fireEvent.click(getByText('Increment Key'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+    fireEvent.click(getByText('Increment Key'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+  });
+
+  it('handles dynamic updates to shouldSave by removing or adding to state', () => {
+    const { container, getByText } = render(<App />);
+    fireEvent.click(getByText('Snapshot'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+    fireEvent.click(getByText('Toggle Should Save'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+    fireEvent.click(getByText('Toggle Should Save'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+    fireEvent.click(getByText('Toggle Should Save'));
     expect(getByText(/Stringified State/i)).toMatchSnapshot();
   });
 
