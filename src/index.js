@@ -1,4 +1,5 @@
 import React, {
+  useRef,
   useState,
   useReducer,
   useEffect,
@@ -12,9 +13,17 @@ const SetShouldSnapshot = React.createContext();
 
 const initialState = {};
 
-function reducer(state, { type, key, value }) {
-  switch (type) {
-    case 'save': return { ...state, [key]: value };
+function reducer(state, action) {
+  switch (action.type) {
+    case 'save': return { ...state, [action.key]: action.value };
+    case 'remove': {
+      if (!state.hasOwnProperty(action.key)) {
+        return state;
+      }
+      const nextState = { ...state };
+      delete nextState[action.key];
+      return nextState;
+    }
     case 'reset': return initialState;
     default: throw new Error();
   }
@@ -37,19 +46,38 @@ export function SnapshotProvider({ children }) {
   );
 }
 
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+
 export function useSnapshot(key, value, shouldSave = true) {
+  const prevKey = usePrevious(key);
   const dispatch = useContext(SnapshotDispatch);
   const shouldSnapshot = useContext(ShouldSnapshot);
+
+  useEffect(() => {
+    if (shouldSnapshot && prevKey !== key) {
+      dispatch({ type: 'remove', key: prevKey });
+    }
+  }, [prevKey, key, value, shouldSnapshot, dispatch]);
+
+  useEffect(() => {
+    if (shouldSnapshot) {
+      if (shouldSave && key) {
+        dispatch({ type: 'save', key, value });
+      } else if (key) {
+        dispatch({ type: 'remove', key });
+      }
+    }
+  }, [key, value, shouldSave, shouldSnapshot, dispatch]);
 
   if (dispatch === undefined) {
     throw new Error('useSnapshot must be used within a SnapshotProvider');
   }
-
-  useEffect(() => {
-    if (shouldSnapshot && shouldSave && key && value) {
-      dispatch({ type: 'save', key, value });
-    }
-  }, [key, value, shouldSave, shouldSnapshot, dispatch]);
 
   return null;
 }
@@ -60,7 +88,9 @@ export function useStateSnapshot() {
   const setShouldSnapshot = useContext(SetShouldSnapshot);
 
   useEffect(() => {
-    setShouldSnapshot(true);
+    if (setShouldSnapshot) {
+      setShouldSnapshot(true);
+    }
 
     return () => {
       dispatch({ type: 'reset' });

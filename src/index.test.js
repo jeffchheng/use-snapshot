@@ -27,6 +27,38 @@ function Baz() {
   return <div>Baz will not snapshot</div>;
 }
 
+function Form() {
+  const [input, setInput] = useState("");
+  useSnapshot("input", input, !!input);
+  return (
+    <>
+      <div>This form will snapshot:</div>
+      <div>
+        <label htmlFor="text-input">Input: </label>
+        <input
+          id="text-input"
+          aria-label="text-input"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+        />
+      </div>
+    </>
+  );
+}
+
+function DynamicKey() {
+  const [key, setKey] = useState(1);
+  useSnapshot(`DynamicKey-${key}`, 'StaticValue', true);
+  return (
+    <>
+      <div>
+        DynamicKey will snapshot
+        <button onClick={() => setKey(x => x + 1)}>Increment Key</button>
+      </div>
+    </>
+  );
+}
+
 function App() {
   const [showState, setShowState] = useState(false);
   return (
@@ -34,6 +66,8 @@ function App() {
       <Foo />
       <Bar />
       <Baz />
+      <Form />
+      <DynamicKey />
       <button onClick={() => setShowState(state => !state)}>Snapshot</button>
       {showState && <State />}
     </SnapshotProvider>
@@ -53,8 +87,26 @@ describe('use-snapshot', () => {
   });
 
   it('can snapshot state with useSnapshot and provide it via useStateSnapshot', () => {
-    const { container, getByText, rerender } = render(<App />);
+    const { container, getByText } = render(<App />);
     fireEvent.click(getByText('Snapshot'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+  });
+
+  it('removes the previous key from state when it changes', () => {
+    const { container, getByText } = render(<App />);
+    fireEvent.click(getByText('Snapshot'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+    fireEvent.click(getByText('Increment Key'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+  });
+
+  it('updates state values when they change', () => {
+    const { container, getByText, getByLabelText } = render(<App />);
+    fireEvent.click(getByText('Snapshot'));
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+    fireEvent.change(getByLabelText('text-input'), { target: { value: 'whatevs' } });
+    expect(getByText(/Stringified State/i)).toMatchSnapshot();
+    fireEvent.change(getByLabelText('text-input'), { target: { value: '' } });
     expect(getByText(/Stringified State/i)).toMatchSnapshot();
   });
 
