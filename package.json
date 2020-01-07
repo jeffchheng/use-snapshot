@@ -27,7 +27,6 @@
   "devDependencies": {
     "@babel/cli": "7",
     "@babel/core": "7",
-    "@babel/preset-env": "7",
     "@babel/preset-react": "7",
     "@testing-library/react": "9",
     "babel-jest": "24",
