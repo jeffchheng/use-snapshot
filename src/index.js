@@ -1,10 +1,12 @@
-import React, {
+const React = require('react');
+
+const {
   useRef,
   useState,
   useReducer,
   useEffect,
   useContext
-} from 'react';
+} = require('react');
 
 const SnapshotDispatch = React.createContext();
 const StateSnapshot = React.createContext();
@@ -29,7 +31,7 @@ function reducer(state, action) {
   }
 }
 
-export function SnapshotProvider({ children }) {
+function SnapshotProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [shouldSnapshot, setShouldSnapshot] = useState(false);
 
@@ -54,7 +56,7 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export function useSnapshot(key, value, shouldSave = true) {
+function useSnapshot(key, value, shouldSave = true) {
   const prevKey = usePrevious(key);
   const dispatch = useContext(SnapshotDispatch);
   const shouldSnapshot = useContext(ShouldSnapshot);
@@ -82,7 +84,7 @@ export function useSnapshot(key, value, shouldSave = true) {
   return null;
 }
 
-export function useStateSnapshot() {
+function useStateSnapshot() {
   const dispatch = useContext(SnapshotDispatch);
   const state = useContext(StateSnapshot);
   const setShouldSnapshot = useContext(SetShouldSnapshot);
@@ -104,3 +106,9 @@ export function useStateSnapshot() {
 
   return state;
 }
+
+module.exports = {
+  SnapshotProvider,
+  useSnapshot,
+  useStateSnapshot,
+};

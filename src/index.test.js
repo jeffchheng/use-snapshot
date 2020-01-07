@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { render, fireEvent } from '@testing-library/react';
+const React = require('react');
+const { useState } = require('react');
+const { render, fireEvent } = require('@testing-library/react');
 
-import {
+const {
   SnapshotProvider,
   useSnapshot,
   useStateSnapshot,
-} from '.';
+} = require('.');
 
 function State() {
   const state = useStateSnapshot();

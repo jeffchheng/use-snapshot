@@ -10,6 +10,9 @@
     "react hooks"
   ],
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "author": {
     "name": "Jeff Chheng",
     "email": "jeffchheng@gmail.com"
@@ -21,10 +24,6 @@
     "test": "jest",
     "release": "np"
   },
-  "files": [
-    "index.js",
-    "README.md"
-  ],
   "devDependencies": {
     "@babel/cli": "7",
     "@babel/core": "7",
