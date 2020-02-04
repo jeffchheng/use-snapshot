@@ -1,4 +1,4 @@
-# use-snapshot &middot; ![Node CI](https://github.com/jeffchheng/use-snapshot/workflows/Node%20CI/badge.svg)
+# use-snapshot &middot; [![npm version](https://badge.fury.io/js/use-snapshot.svg)](https://www.npmjs.com/package/use-snapshot) &middot; ![Node CI](https://github.com/jeffchheng/use-snapshot/workflows/Node%20CI/badge.svg)
 
 Snapshot any value in a component's render and save it in one place for sending in crash logs and the like.
 
