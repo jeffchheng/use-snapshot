@@ -1,37 +1,39 @@
-const React = require('react');
-
-const {
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
   useRef,
   useState,
-  useReducer,
-  useEffect,
-  useContext
-} = require('react');
+} from "react";
 
-const SnapshotDispatch = React.createContext();
-const StateSnapshot = React.createContext();
-const ShouldSnapshot = React.createContext();
-const SetShouldSnapshot = React.createContext();
+const SnapshotDispatch = React.createContext(undefined);
+const StateSnapshot = React.createContext(undefined);
+const ShouldSnapshot = React.createContext(undefined);
+const SetShouldSnapshot = React.createContext(undefined);
 
 const initialState = {};
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'save': return { ...state, [action.key]: action.value };
-    case 'remove': {
-      if (!state.hasOwnProperty(action.key)) {
-        return state;
+    case "save": return { ...state, [action.key]: action.value };
+    case "remove": {
+      if (action.key in state) {
+        const nextState = { ...state };
+        delete nextState[action.key];
+        return nextState;
       }
-      const nextState = { ...state };
-      delete nextState[action.key];
-      return nextState;
+      return state;
     }
-    case 'reset': return initialState;
+    case "reset": return initialState;
     default: throw new Error();
   }
 }
 
-function SnapshotProvider({ children }) {
+type SnapshotProviderProps = {
+  children?: any
+}
+
+export function SnapshotProvider({ children }: SnapshotProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [shouldSnapshot, setShouldSnapshot] = useState(false);
 
@@ -56,35 +58,33 @@ function usePrevious(value) {
   return ref.current;
 }
 
-function useSnapshot(key, value, shouldSave = true) {
+export function useSnapshot(key, value, shouldSave = true) {
   const prevKey = usePrevious(key);
   const dispatch = useContext(SnapshotDispatch);
   const shouldSnapshot = useContext(ShouldSnapshot);
 
   useEffect(() => {
     if (shouldSnapshot && prevKey !== key) {
-      dispatch({ type: 'remove', key: prevKey });
+      dispatch({ type: "remove", key: prevKey });
     }
   }, [prevKey, key, value, shouldSnapshot, dispatch]);
 
   useEffect(() => {
     if (shouldSnapshot) {
       if (shouldSave && key) {
-        dispatch({ type: 'save', key, value });
+        dispatch({ type: "save", key, value });
       } else if (key) {
-        dispatch({ type: 'remove', key });
+        dispatch({ type: "remove", key });
       }
     }
   }, [key, value, shouldSave, shouldSnapshot, dispatch]);
 
   if (dispatch === undefined) {
-    throw new Error('useSnapshot must be used within a SnapshotProvider');
+    throw new Error("useSnapshot must be used within a SnapshotProvider");
   }
-
-  return null;
 }
 
-function useStateSnapshot() {
+export function useStateSnapshot() {
   const dispatch = useContext(SnapshotDispatch);
   const state = useContext(StateSnapshot);
   const setShouldSnapshot = useContext(SetShouldSnapshot);
@@ -95,20 +95,14 @@ function useStateSnapshot() {
     }
 
     return () => {
-      dispatch({ type: 'reset' });
+      dispatch({ type: "reset" });
       setShouldSnapshot(false);
-    }
+    };
   }, [dispatch, setShouldSnapshot]);
 
   if (dispatch === undefined) {
-    throw new Error('useStateSnapshot must be used within a SnapshotProvider');
+    throw new Error("useStateSnapshot must be used within a SnapshotProvider");
   }
 
   return state;
 }
-
-module.exports = {
-  SnapshotProvider,
-  useSnapshot,
-  useStateSnapshot,
-};
