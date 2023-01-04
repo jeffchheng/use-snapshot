@@ -54,7 +54,7 @@
     "np": "^5.0.0",
     "react": ">= 16.8",
     "react-dom": ">= 16.8",
-    "ts-jest": "^22.4.6",
+    "ts-jest": "^29.0.3",
     "typescript": "^3.7.5"
   },
   "peerDependencies": {
